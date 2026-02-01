@@ -1,0 +1,61 @@
+# IDE
+.vscode
+.idea
+.cursor
+.codex
+
+# Claude Code
+.claude/settings.local.json
+.claude/skills/
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Testing
+coverage
+.nyc_output
+__tests__/
+
+# Next.js
+.next
+out
+build
+dist
+
+# Production
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment
+.env
+.env*.local
+.env.production
+
+# OS
+.DS_Store
+*.pem
+Thumbs.db
+
+# Debug
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Temporary files
+*.tmp
+*.temp
+.cache
+
+# Shared resources (if needed, can be removed)
+.shared/

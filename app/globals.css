@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Neobrutalism Colors */
+    --color-primary: #FFE135;
+    --color-secondary: #FF6B6B;
+    --color-accent: #4ECDC4;
+    --color-background: #FFFFFF;
+    --color-surface: #F5F5F5;
+    --color-text: #000000;
+    --color-text-secondary: #4A4A4A;
+    --color-border: #000000;
+    --color-success: #22C55E;
+    --color-error: #EF4444;
+
+    /* Neobrutalism Border */
+    --border-width: 3px;
+    --border-color: #000000;
+
+    /* Neobrutalism Shadow (offset, no blur) */
+    --shadow-offset: 4px;
+    --shadow-color: #000000;
+
+    /* Typography */
+    --font-heading: 'Space Grotesk', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-code: 'JetBrains Mono', 'Fira Code', monospace;
+
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    /* Border Radius (Neobrutalism uses minimal or no rounding) */
+    --radius: 0px;
+  }
+
+  * {
+    border-color: var(--border-color);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+  }
+
+  code, pre {
+    font-family: var(--font-code);
+  }
+}
+
+@layer components {
+  /* Neobrutalism Button Style */
+  .btn-neo {
+    @apply border-[3px] border-black px-4 py-2 font-bold;
+    background-color: var(--color-primary);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .btn-neo:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+  }
+
+  .btn-neo:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+  }
+
+  .btn-neo:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+  }
+
+  /* Neobrutalism Card Style */
+  .card-neo {
+    @apply border-[3px] border-black p-4;
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+  }
+
+  /* Neobrutalism Input Style */
+  .input-neo {
+    @apply border-[3px] border-black px-3 py-2 w-full;
+    background-color: var(--color-background);
+    outline: none;
+  }
+
+  .input-neo:focus {
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+  }
+
+  /* Neobrutalism Container */
+  .container-neo {
+    @apply border-[3px] border-black;
+    background-color: var(--color-background);
+  }
+}
+
+@layer utilities {
+  /* Shadow utilities */
+  .shadow-neo {
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+  }
+
+  .shadow-neo-sm {
+    box-shadow: 2px 2px 0 var(--shadow-color);
+  }
+
+  .shadow-neo-lg {
+    box-shadow: 6px 6px 0 var(--shadow-color);
+  }
+
+  /* Border utilities */
+  .border-neo {
+    border-width: var(--border-width);
+    border-style: solid;
+    border-color: var(--border-color);
+  }
+}
