@@ -38,15 +38,8 @@ export interface UseMarkdownResult {
  * @param markdown - Raw Markdown string
  * @param options - Parser and debounce options
  */
-export function useMarkdown(
-  markdown: string,
-  options: UseMarkdownOptions = {}
-): UseMarkdownResult {
-  const { 
-    debounceMs = 300, 
-    optimizeLargeDocuments = true,
-    ...parserOptions 
-  } = options
+export function useMarkdown(markdown: string, options: UseMarkdownOptions = {}): UseMarkdownResult {
+  const { debounceMs = 300, optimizeLargeDocuments = true, ...parserOptions } = options
 
   const [result, setResult] = useState<ParseResult>({
     html: '',
@@ -54,7 +47,7 @@ export function useMarkdown(
   })
   const [status, setStatus] = useState<ParseStatus>('idle')
   const [parseCounter, setParseCounter] = useState(0)
-  
+
   // Track previous markdown for comparison
   const prevMarkdownRef = useRef<string>('')
   const parseAbortRef = useRef<AbortController | null>(null)
@@ -76,13 +69,22 @@ export function useMarkdown(
     [parserOptions.gfm, parserOptions.sanitize, parserOptions.themeId]
   )
 
+  // Track previous parser options to detect theme switches even when the
+  // markdown text itself is unchanged.
+  const prevOptionsRef = useRef<ParserOptions>(memoizedOptions)
+
   // Parse effect with optimization
   useEffect(() => {
-    // Skip if content unchanged (except for forced refresh)
-    if (debouncedMarkdown === prevMarkdownRef.current && parseCounter === 0) {
+    // Skip only if neither content nor options changed (unless forced refresh).
+    // Tracking options is required so a theme switch (themeId change) re-parses
+    // even when the markdown text itself is unchanged.
+    const contentChanged = debouncedMarkdown !== prevMarkdownRef.current
+    const optionsChanged = memoizedOptions !== prevOptionsRef.current
+    if (!contentChanged && !optionsChanged && parseCounter === 0) {
       return
     }
     prevMarkdownRef.current = debouncedMarkdown
+    prevOptionsRef.current = memoizedOptions
 
     if (!debouncedMarkdown) {
       setResult({ html: '', success: true })
@@ -133,13 +135,16 @@ export function useMarkdown(
   }, [])
 
   // Memoize return value for stable reference
-  return useMemo(() => ({
-    html: result.html,
-    status,
-    error: result.error ?? null,
-    processingTime: result.processingTime ?? null,
-    refresh,
-  }), [result.html, status, result.error, result.processingTime, refresh])
+  return useMemo(
+    () => ({
+      html: result.html,
+      status,
+      error: result.error ?? null,
+      processingTime: result.processingTime ?? null,
+      refresh,
+    }),
+    [result.html, status, result.error, result.processingTime, refresh]
+  )
 }
 
 /**

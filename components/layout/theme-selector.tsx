@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { ChevronDown, Palette } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { getAvailableThemes, getThemeMeta } from '@/lib/styles/theme-config'
 import type { ThemeId, ThemeMeta } from '@/types/theme'
 
 export interface ThemeSelectorProps {
@@ -16,21 +17,8 @@ export interface ThemeSelectorProps {
   className?: string | undefined
 }
 
-// Available themes (extensible for future)
-const AVAILABLE_THEMES: ThemeMeta[] = [
-  {
-    id: 'neobrutalism',
-    name: 'Neobrutalism',
-    description: '现代、大胆的设计风格',
-    isDefault: true,
-  },
-  // Future themes can be added here
-  // {
-  //   id: 'minimal',
-  //   name: 'Minimal',
-  //   description: '简约、干净的设计风格',
-  // },
-]
+// Available themes resolved from the central registry in theme-config.ts
+const AVAILABLE_THEMES: ThemeMeta[] = getAvailableThemes()
 
 export function ThemeSelector({
   currentTheme = 'neobrutalism',
@@ -54,7 +42,8 @@ export function ThemeSelector({
     }
   }, [])
 
-  const currentThemeMeta = AVAILABLE_THEMES.find((t) => t.id === currentTheme) ?? AVAILABLE_THEMES[0]
+  const currentThemeMeta =
+    AVAILABLE_THEMES.find((t) => t.id === currentTheme) ?? getThemeMeta(currentTheme)
 
   const handleSelect = (themeId: ThemeId) => {
     onThemeChange?.(themeId)
@@ -81,12 +70,7 @@ export function ThemeSelector({
         <Palette className="w-4 h-4" />
         <span className="hidden sm:inline">{currentThemeMeta?.name}</span>
         <span className="sm:hidden">风格</span>
-        <ChevronDown
-          className={cn(
-            'w-4 h-4 transition-transform',
-            isOpen && 'rotate-180'
-          )}
-        />
+        <ChevronDown className={cn('w-4 h-4 transition-transform', isOpen && 'rotate-180')} />
       </button>
 
       {/* Dropdown menu */}
@@ -131,9 +115,7 @@ export function ThemeSelector({
 
           {/* Footer hint */}
           <div className="px-4 py-2 bg-[var(--color-surface)] border-t-2 border-black">
-            <p className="text-xs text-[var(--color-text-secondary)]">
-              更多风格即将推出...
-            </p>
+            <p className="text-xs text-[var(--color-text-secondary)]">更多风格即将推出...</p>
           </div>
         </div>
       )}

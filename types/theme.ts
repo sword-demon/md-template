@@ -1,14 +1,14 @@
 /**
  * Theme Configuration Types
- * 
+ *
  * Type definitions for the theming system
  */
 
 /**
  * Available theme identifiers
- * Currently only 'neobrutalism', extensible for future themes
+ * Extensible for future themes
  */
-export type ThemeId = 'neobrutalism'
+export type ThemeId = 'neobrutalism' | 'kami'
 
 /**
  * Theme metadata
@@ -28,6 +28,12 @@ export interface ThemeMeta {
 
   /** Whether this is the default theme */
   isDefault?: boolean
+
+  /** Whether to wrap output in an outer container (e.g. Kami's parchment section) */
+  wrapWithContainer?: boolean
+
+  /** Outer container inline style (used when wrapWithContainer is true) */
+  containerStyle?: string
 }
 
 /**
@@ -116,12 +122,34 @@ export interface ThemeTokens {
  * Markdown element types for styling
  */
 export type MarkdownElement =
-  | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
-  | 'p' | 'blockquote' | 'pre' | 'code' | 'inlineCode'
-  | 'ul' | 'ol' | 'li' | 'a' | 'img'
-  | 'table' | 'thead' | 'tbody' | 'tr' | 'th' | 'td'
-  | 'strong' | 'em' | 'del' | 'hr'
-  | 'taskListItem' | 'taskListCheckbox'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6'
+  | 'p'
+  | 'blockquote'
+  | 'pre'
+  | 'code'
+  | 'inlineCode'
+  | 'ul'
+  | 'ol'
+  | 'li'
+  | 'a'
+  | 'img'
+  | 'table'
+  | 'thead'
+  | 'tbody'
+  | 'tr'
+  | 'th'
+  | 'td'
+  | 'strong'
+  | 'em'
+  | 'del'
+  | 'hr'
+  | 'taskListItem'
+  | 'taskListCheckbox'
 
 /**
  * Element style mapping (inline CSS strings)

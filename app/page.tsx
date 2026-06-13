@@ -8,6 +8,7 @@ import { RichTextPreview } from '@/components/preview/rich-text-preview'
 import { Toast, ToastContainer } from '@/components/ui/toast'
 import { useMarkdown } from '@/lib/hooks/use-markdown'
 import { useToast } from '@/lib/hooks/use-toast'
+import { getThemeMeta } from '@/lib/styles/theme-config'
 import type { ThemeId } from '@/types/theme'
 
 const DEFAULT_MARKDOWN = `---
@@ -75,10 +76,13 @@ export default function Home() {
   })
 
   // Theme change handler
-  const handleThemeChange = React.useCallback((themeId: ThemeId) => {
-    setCurrentTheme(themeId)
-    showToast(`已切换到 ${themeId === 'neobrutalism' ? 'Neobrutalism' : themeId} 风格`, 'success')
-  }, [showToast])
+  const handleThemeChange = React.useCallback(
+    (themeId: ThemeId) => {
+      setCurrentTheme(themeId)
+      showToast(`已切换到 ${getThemeMeta(themeId).name} 风格`, 'success')
+    },
+    [showToast]
+  )
 
   // Copy handlers
   const handleCopySuccess = React.useCallback(() => {
@@ -119,21 +123,12 @@ export default function Home() {
   return (
     <main className="h-screen flex flex-col">
       {/* Navbar with theme selector */}
-      <Navbar
-        currentTheme={currentTheme}
-        onThemeChange={handleThemeChange}
-      />
+      <Navbar currentTheme={currentTheme} onThemeChange={handleThemeChange} />
 
       {/* Main Content */}
       <div className="flex-1 overflow-hidden">
         <SplitPane
-          left={
-            <MarkdownEditor
-              value={markdown}
-              onChange={setMarkdown}
-              scrollRef={editorRef}
-            />
-          }
+          left={<MarkdownEditor value={markdown} onChange={setMarkdown} scrollRef={editorRef} />}
           right={
             <RichTextPreview
               html={html}
@@ -153,7 +148,14 @@ export default function Home() {
       <footer className="flex-shrink-0 px-6 py-2 bg-[var(--color-surface)] border-t-[3px] border-black text-xs text-[var(--color-text-secondary)]">
         <div className="flex items-center justify-between">
           <span>
-            状态: {status === 'idle' ? '就绪' : status === 'parsing' ? '解析中...' : status === 'success' ? '完成' : '错误'}
+            状态:{' '}
+            {status === 'idle'
+              ? '就绪'
+              : status === 'parsing'
+                ? '解析中...'
+                : status === 'success'
+                  ? '完成'
+                  : '错误'}
           </span>
           <span>字符数: {markdown.length}</span>
         </div>
@@ -162,11 +164,7 @@ export default function Home() {
       {/* Toast Notifications */}
       <ToastContainer>
         {toasts.map((toast) => (
-          <Toast
-            key={toast.id}
-            variant={toast.variant}
-            onClose={() => dismissToast(toast.id)}
-          >
+          <Toast key={toast.id} variant={toast.variant} onClose={() => dismissToast(toast.id)}>
             {toast.message}
           </Toast>
         ))}

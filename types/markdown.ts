@@ -1,11 +1,13 @@
 /**
  * Markdown AST Types
- * 
+ *
  * Type definitions for Markdown parsing
  */
 
 // Note: mdast types are available via @types/mdast
 // We define our own simplified types for this project
+
+import type { ThemeId } from './theme'
 
 /**
  * Result of parsing Markdown
@@ -35,7 +37,7 @@ export interface ParserOptions {
   sanitize?: boolean
 
   /** Theme ID for styling */
-  themeId?: string
+  themeId?: ThemeId
 }
 
 /**
